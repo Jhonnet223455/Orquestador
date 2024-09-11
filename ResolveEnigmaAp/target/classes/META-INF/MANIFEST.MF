@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Built-By: Hector Vanegas
+Build-Jdk: 17.0.6
+Implementation-Title: resolve-enigma-api
+Implementation-Version: 1.0.0
+Implementation-Vendor-Id: co.com.vanegas.service.resolveEnigmaApi
+Implementation-Vendor: Pivotal Software, Inc.
+Implementation-URL: http://projects.spring.io/spring-boot/resolve-enigma
+ -api/
+Created-By: Maven Integration for Eclipse
+
