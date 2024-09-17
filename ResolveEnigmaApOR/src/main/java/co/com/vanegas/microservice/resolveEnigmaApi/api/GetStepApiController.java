@@ -1,69 +1,41 @@
 package co.com.vanegas.microservice.resolveEnigmaApi.api;
 
-import co.com.vanegas.microservice.resolveEnigmaApi.model.GetEnigmaStepResponse;
-import co.com.vanegas.microservice.resolveEnigmaApi.model.JsonApiBodyRequest;
-import co.com.vanegas.microservice.resolveEnigmaApi.model.JsonApiBodyResponseSuccess;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.*;
-import org.apache.camel.EndpointInject;
-import org.apache.camel.FluentProducerTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.camel.ProducerTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import springfox.documentation.spring.web.json.Json;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+@RestController
+@RequestMapping("/orques/steps")
+public class GetStepApiController {
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2024-02-27T19:20:23.716-05:00[America/Bogota]")
-@Controller
-public class GetStepApiController implements GetStepApi {
+    @Autowired
+    private ProducerTemplate producerTemplate;
 
-    private static final Logger log = LoggerFactory.getLogger(GetStepApiController.class);
-
-    private final ObjectMapper objectMapper;
-
-    private final HttpServletRequest request;
-
-    @EndpointInject(uri = "direct:get-step-one")
-    private FluentProducerTemplate producerTemplateResolveEnigma;
-
-    @org.springframework.beans.factory.annotation.Autowired
-    public GetStepApiController(ObjectMapper objectMapper, HttpServletRequest request) {
-        this.objectMapper = objectMapper;
-        this.request = request;
+    @PostMapping("/step-one")
+    public ResponseEntity<String> getStepOne(@RequestBody String requestBody) {
+        String response = producerTemplate.requestBody("direct:getStepOne", requestBody, String.class);
+        return ResponseEntity.ok(response);
     }
 
-
-    public ResponseEntity<JsonApiBodyResponseSuccess> getStepOne(@ApiParam(value = "body" ,required=true )  @Valid @RequestBody JsonApiBodyRequest body) {
-        try{
-            producerTemplateResolveEnigma.request();
-            return new ResponseEntity<JsonApiBodyResponseSuccess>(objectMapper.readValue("{ \"data\": [ { \"header\": { \"id\": \"id\", \"type\": \"type\" }, \"answer\": \"answer\" } ] }", JsonApiBodyResponseSuccess.class), HttpStatus.OK);
-        } catch (Exception e) {
-            log.error("Couldn't serialize response for content type application/json", e);
-            return new ResponseEntity<JsonApiBodyResponseSuccess>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @PostMapping("/step-two")
+    public ResponseEntity<String> getStepTwo(@RequestBody String requestBody) {
+        String response = producerTemplate.requestBody("direct:getStepTwo", requestBody, String.class);
+        return ResponseEntity.ok(response);
     }
 
-    public ResponseEntity<List<JsonApiBodyResponseSuccess>> getStep(@ApiParam(value = "request body get enigma step" ,required=true )  @Valid @RequestBody JsonApiBodyRequest body) {
-        String accept = request.getHeader("Accept");
-
-        GetEnigmaStepResponse getEnigmaStepResponse = new GetEnigmaStepResponse();
-        getEnigmaStepResponse.answer("Cerrar la nevera");
-
-        getEnigmaStepResponse.header(body.getData().get(0).getHeader());
-
-        JsonApiBodyResponseSuccess responseSuccess = new JsonApiBodyResponseSuccess();
-        responseSuccess.addDataItem(getEnigmaStepResponse);
-
-        List<JsonApiBodyResponseSuccess> response = List.of(responseSuccess);
-        return new ResponseEntity<List<JsonApiBodyResponseSuccess>>(response, HttpStatus.OK);
+    @PostMapping("/step-three")
+    public ResponseEntity<String> getStepThree(@RequestBody String requestBody) {
+        String response = producerTemplate.requestBody("direct:getStepThree", requestBody, String.class);
+        return ResponseEntity.ok(response);
     }
 
+    @PostMapping("/orchestration")
+    public ResponseEntity<String> startOrchestration(@RequestBody String requestBody) {
+        String response = producerTemplate.requestBody("direct:startOrchestration", requestBody, String.class);
+        return ResponseEntity.ok(response);
+    }
 }

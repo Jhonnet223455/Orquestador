@@ -1,11 +1,9 @@
 {
-"data":[
-{
-"header":{
-"id":"12345",
-"type":"StepsGiraffeRefrigerator"
+"data": [{
+"header": {
+"id": "12345",
+"type": "StepsGiraffeRefrigerator"
 },
-"step":"1"
-}
-]
+"step": "1"
+}]
 }

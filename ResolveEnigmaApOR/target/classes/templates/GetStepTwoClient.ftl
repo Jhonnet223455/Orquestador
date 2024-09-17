@@ -4,6 +4,6 @@
 "id": "12345",
 "type": "StepsGiraffeRefrigerator"
 },
-"step": "1"
+"step": "2"
 }]
 }
